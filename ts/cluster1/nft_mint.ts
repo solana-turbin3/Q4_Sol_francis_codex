@@ -1,8 +1,16 @@
-import { createUmi } from "@metaplex-foundation/umi-bundle-defaults"
-import { createSignerFromKeypair, signerIdentity, generateSigner, percentAmount } from "@metaplex-foundation/umi"
-import { createNft, mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
+import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
+import { 
+    createNft, 
+    mplTokenMetadata
+} from "@metaplex-foundation/mpl-token-metadata";
+import { 
+    createSignerFromKeypair, 
+    signerIdentity, 
+    generateSigner, 
+    percentAmount 
+} from "@metaplex-foundation/umi";
 
-import wallet from "../wba-wallet.json"
+import wallet from "../Turbin3-wallet.json";
 import base58 from "bs58";
 
 const RPC_ENDPOINT = "https://api.devnet.solana.com";
@@ -16,11 +24,30 @@ umi.use(mplTokenMetadata())
 const mint = generateSigner(umi);
 
 (async () => {
-    // let tx = ???
-    // let result = await tx.sendAndConfirm(umi);
-    // const signature = base58.encode(result.signature);
-    
-    // console.log(`Succesfully Minted! Check out your TX here:\nhttps://explorer.solana.com/tx/${signature}?cluster=devnet`)
+    try {
+        let tx = createNft(umi, {
+            mint,
+            name: "franciscodex",
+            symbol: "999",
+            uri: "https://devnet.irys.xyz/HQeagzTkZXHKATdEmtsbncqX8LTSB4dgbLutaqRUpAru",
+            sellerFeeBasisPoints: percentAmount(1),
+            creators: [
+                {
+                    address: myKeypairSigner.publicKey,
+                    verified: true,
+                    share: 100,
+                }
+            ],
+            collection: null,
+            uses: null,
+        });
 
-    console.log("Mint Address: ", mint.publicKey);
+        let result = await tx.sendAndConfirm(umi);
+        const signature = base58.encode(result.signature);
+        
+        console.log(`Successfully Minted! Check out your TX here:\nhttps://explorer.solana.com/tx/${signature}?cluster=devnet`)
+        console.log("Mint Address: ", mint.publicKey);
+    } catch (error) {
+        console.error("Error creating NFT:", error);
+    }
 })();
