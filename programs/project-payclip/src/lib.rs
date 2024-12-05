@@ -1,3 +1,4 @@
+#![allow(non_snake_case)]
 use anchor_lang::prelude::*;
 use anchor_spl::token::{self, Mint, Token, TokenAccount, Transfer};
 
@@ -99,7 +100,7 @@ pub struct InitializeVault<'info> {
 }
 
 #[derive(Accounts)]
-#[instruction(payment_id: String)]
+#[instruction(amount: u64, payment_id: String)]
 pub struct CreatePayment<'info> {
     #[account(
         init,

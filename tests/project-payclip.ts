@@ -28,9 +28,7 @@ describe("payclip", () => {
     await program.methods
       .initializeVault(bump) 
       .accounts({
-        vaultState: vaultPDA,
         authority: payer,
-        systemProgram: SystemProgram.programId,
       })
       .rpc();
     console.log("Vault initialized.");
@@ -87,13 +85,10 @@ const [userStatsPDA] = PublicKey.findProgramAddressSync(
 const expiryTime = new anchor.BN(Math.floor(Date.now() / 1000) + 600);
 await program.methods
   .createPayment(new anchor.BN(500), paymentId, expiryTime) // Use the BN instance for expiry
-  .accounts({
-    payment: paymentPDA,
-    userStats: userStatsPDA,
+  .accounts({    
     payer: payer,
     recipient: recipient.publicKey,
     mint: mint,
-    systemProgram: SystemProgram.programId,
   })
   .rpc();
 
@@ -110,7 +105,6 @@ console.log("Payment created.");
         payer: payer,
         recipient: recipient.publicKey,
         mint: mint,
-        tokenProgram: TOKEN_PROGRAM_ID,
       })
       .rpc();
     console.log("Payment processed successfully.");
