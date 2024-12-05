@@ -74,27 +74,30 @@ describe("payclip", () => {
 
     // Create payment
     const paymentId = "test_payment_001";
-    const [paymentPDA] = PublicKey.findProgramAddressSync(
-      [Buffer.from("payment"), Buffer.from(paymentId)],
-      program.programId
-    );
-    const [userStatsPDA] = PublicKey.findProgramAddressSync(
-      [Buffer.from("user_stats"), recipient.publicKey.toBuffer()],
-      program.programId
-    );
+const [paymentPDA] = PublicKey.findProgramAddressSync(
+  [Buffer.from("payment"), Buffer.from(paymentId)],
+  program.programId
+);
+const [userStatsPDA] = PublicKey.findProgramAddressSync(
+  [Buffer.from("user_stats"), recipient.publicKey.toBuffer()],
+  program.programId
+);
 
-    await program.methods
-      .createPayment(new anchor.BN(500), paymentId, Math.floor(Date.now() / 1000) + 600)
-      .accounts({
-        payment: paymentPDA,
-        userStats: userStatsPDA,
-        payer: payer,
-        recipient: recipient.publicKey,
-        mint: mint,
-        systemProgram: SystemProgram.programId,
-      })
-      .rpc();
-    console.log("Payment created.");
+// Create a BN instance for the expiry time
+const expiryTime = new anchor.BN(Math.floor(Date.now() / 1000) + 600);
+await program.methods
+  .createPayment(new anchor.BN(500), paymentId, expiryTime) // Use the BN instance for expiry
+  .accounts({
+    payment: paymentPDA,
+    userStats: userStatsPDA,
+    payer: payer,
+    recipient: recipient.publicKey,
+    mint: mint,
+    systemProgram: SystemProgram.programId,
+  })
+  .rpc();
+
+console.log("Payment created.");
 
     // Process payment
     await program.methods

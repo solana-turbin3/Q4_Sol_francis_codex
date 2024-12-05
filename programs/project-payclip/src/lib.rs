@@ -9,7 +9,7 @@ pub mod payclip {
     use super::*;
 
     // Initialize the payment vault
-    pub fn initialize_vault(
+    pub fn initializeVault(
         ctx: Context<InitializeVault>,
         bump: u8,
     ) -> Result<()> {
@@ -19,7 +19,7 @@ pub mod payclip {
     }
 
     // Create a new payment
-    pub fn create_payment(
+    pub fn createPayment(
         ctx: Context<CreatePayment>,
         amount: u64,
         payment_id: String,
@@ -43,7 +43,7 @@ pub mod payclip {
     }
 
     // Process payment
-    pub fn process_payment(
+    pub fn processPayment(
         ctx: Context<ProcessPayment>,
         amount: u64,
     ) -> Result<()> {
