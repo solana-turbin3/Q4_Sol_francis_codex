@@ -60,7 +60,7 @@ to receive funds, making it perfect for crypto beginners.
 
 1. **Clone the Repository/Main Branch**
    ```bash
-   git clone https://github.com/francis-codex/Q4_Sol_francis_codex.git 
+   git clone https://github.com/solana-turbin3/Q4_Sol_francis_codex.git
    cd Q4_Sol_francis_codex
    anchor build
    ```
